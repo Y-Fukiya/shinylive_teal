@@ -2,13 +2,29 @@ library(teal)
 
 app <- init(
   data = teal_data(
-    dataset("IRIS", iris),
-    dataset("MTCARS", mtcars)
+    dataset("iris", iris)
   ),
-  modules = example_module(),
-  header = "My first teal application"
+  modules = list(
+    module(
+      "iris histogram",
+      server = function(input, output, session, data) {
+        output$hist <- renderPlot(
+          hist(data[["iris"]]()[[input$var]])
+        )
+      },
+      ui = function(id, data, ...) {
+        ns <- NS(id)
+        list(
+          shiny::selectInput(
+            ns("var"),
+            "Column name",
+            names(data[["iris"]]())[1:4]
+          ),
+          plotOutput(ns("hist"))
+        )
+      }
+    )
+  )
 )
 
-if (interactive()) {
-  runApp(app)
-}
+shinyApp(app$ui, app$server)
