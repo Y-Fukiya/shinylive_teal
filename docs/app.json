@@ -1,0 +1,1 @@
+[{"name":"app.R","content":"library(teal)\n\napp <- init(\n  data = teal_data(\n    dataset(\"IRIS\", iris),\n    dataset(\"MTCARS\", mtcars)\n  ),\n  modules = example_module(),\n  header = \"My first teal application\"\n)\n\nif (interactive()) {\n  runApp(app)\n}\n","type":"text"}]
